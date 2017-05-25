@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+
+  <!-- Include external CSS. -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.25.0/codemirror.min.css">
+
+  <!-- Include Editor style. -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/froala-editor/2.5.1/css/froala_editor.pkgd.min.css" rel="stylesheet" type="text/css" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/froala-editor/2.5.1/css/froala_style.min.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+  <!-- Include external JS libs. -->
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.25.0/codemirror.min.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.25.0/mode/xml/xml.min.js"></script>
+
+  <!-- Include Editor JS files. -->
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/froala-editor/2.5.1//js/froala_editor.pkgd.min.js"></script>
+  <div class="sample">
+    <h2>File upload example.</h2>
+    <form>
+      <textarea id="edit" name="content"></textarea>
+    </form>
+  </div>
+
+  <!-- Initialize the editor. -->
+  <script>
+    $(function() {
+      $('#edit').froalaEditor({
+        // Set the file upload URL.
+//        imageUploadURL: './upload_image',
+        imageManagerLoadURL: './load_images',
+        imageManagerDeleteURL: './delete_image',
+        imageUploadToS3: <%= @aws_data.to_json.html_safe %>,
+        fileUploadToS3: <%= @aws_data.to_json.html_safe %>,
+//        fileUploadURL: '/upload_file',
+        videoUploadURL: '/upload_video',
+        fileUploadParams: {id: 'my_editor'},
+        imageUploadParams: {
+          id: 'my_editor'
+        }
+      }),
+      $('#edit').on('froalaEditor.file.unlink', function (e, editor, $img) {
+        console.log('delete triggered');
+        console.log($img);
+        $.ajax({
+          // Request method.
+          method: 'POST',
+
+          // Request URL.
+          url: '/delete_file',
+
+          // Request params.
+          data: {
+            src: $img.getAttribute("href")
+          }
+        })
+        .done (function (data) {
+          console.log ('File was deleted');
+        })
+        .fail (function (err) {
+          console.log ('File delete problem: ' + JSON.stringify(err));
+        })
+      });
+    });
+  </script>
+</body>
+</html>
