@@ -3,12 +3,12 @@ class FroalaController < ActionController::Base
   # Index.
   def index
     options = {
-        bucket: ENV['S3_BUCKET'],
-        region: ENV['S3_REGION'],
-        keyStart: ENV['S3_KEY_START'],
+        bucket: 'bucket_name',
+        region: 'us-east-1',
+        keyStart: 'uploads/',
         acl: 'public-read',
-        accessKey: ENV['S3_ACCESS_KEY'],
-        secretKey: ENV['S3_SECRET_KEY']
+        accessKey: 'aws_access_key',
+        secretKey: 'aws_secret_key'
     }
 
     @aws_data = FroalaEditorSDK::S3.data_hash(options)
@@ -17,6 +17,17 @@ class FroalaController < ActionController::Base
   # Upload file.
   def upload_file
     render :json => FroalaEditorSDK::File.upload(params, "public/uploads/files/")
+  end
+
+  # Validate if file is smaller than 10Mb.
+  def upload_file_validation
+    render :json => FroalaEditorSDK::File.upload(params, "public/uploads/files/", {
+      validation: Proc.new do |file, type|
+        if File.size(file) > 10 * 1024 * 1024
+          raise 'File size exceeded'
+        end
+      end
+    })
   end
 
   # Delete file.
@@ -49,6 +60,18 @@ class FroalaController < ActionController::Base
     })
   end
 
+  # Validate if image is square.
+  def upload_image_validation
+    render :json => FroalaEditorSDK::Image.upload(params, "public/uploads/images/", {
+      validation: Proc.new do |file, type|
+        img = MiniMagick::Image.open(file)
+        if img.width != img.height
+          raise 'Image is not square'
+        end
+      end
+    })
+  end
+
   # Load images.
   def load_images
       render :json => FroalaEditorSDK::Image.load_images("public/uploads/images/")
@@ -72,5 +95,4 @@ class FroalaController < ActionController::Base
       render :nothing => true
     end
   end
-
 end

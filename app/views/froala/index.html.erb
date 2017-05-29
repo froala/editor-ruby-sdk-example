@@ -44,6 +44,11 @@
     <form>
       <textarea id="edit-s3"></textarea>
     </form>
+
+    <h2>Custom file and image validation.</h2>
+    <form>
+      <textarea id="edit-validation"></textarea>
+    </form>
   </div>
 
   <!-- Initialize the editor. -->
@@ -115,6 +120,11 @@
         // Set the file upload URL.
         imageUploadToS3: <%= @aws_data.to_json.html_safe %>
       })
+
+      $('#edit-validation').froalaEditor({
+        imageUploadURL: '<%= froala_upload_image_validation_path %>',
+        fileUploadURL: '<%= froala_upload_file_validation_path %>'
+      });
     });
   </script>
 </body>
