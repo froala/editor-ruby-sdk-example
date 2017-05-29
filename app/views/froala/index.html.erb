@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+
+  <!-- Include external CSS. -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.25.0/codemirror.min.css">
+
+  <!-- Include Editor style. -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/froala-editor/2.5.1/css/froala_editor.pkgd.min.css" rel="stylesheet" type="text/css" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/froala-editor/2.5.1/css/froala_style.min.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+  <!-- Include external JS libs. -->
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.25.0/codemirror.min.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.25.0/mode/xml/xml.min.js"></script>
+
+  <!-- Include Editor JS files. -->
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/froala-editor/2.5.1//js/froala_editor.pkgd.min.js"></script>
+  <div class="sample">
+    <h2>Basic example.</h2>
+    <ul>
+      <li>Upload files, images and videos to server side.</li>
+      <li>Delete files and images from server side.</li>
+    </ul>
+    <form>
+      <textarea id="edit-basic"></textarea>
+    </form>
+
+    <h2>Accept only JPEG images.</h2>
+    <form>
+      <textarea id="edit-jpeg"></textarea>
+    </form>
+
+    <h2>Resize image on upload.</h2>
+    <form>
+      <textarea id="edit-resize"></textarea>
+    </form>
+
+    <h2>Upload images to S3.</h2>
+    <form>
+      <textarea id="edit-s3"></textarea>
+    </form>
+  </div>
+
+  <!-- Initialize the editor. -->
+  <script>
+    $(function() {
+      // Upload images basic example.
+      $('#edit-basic').froalaEditor({
+        // Set the file upload URL.
+        imageUploadURL: '<%= froala_upload_image_path %>',
+        imageManagerLoadURL: '<%= froala_load_images_path %>',
+        imageManagerDeleteURL: '<%= froala_delete_image_path %>',
+        fileUploadURL: '<%= froala_upload_file_path %>',
+        videoUploadURL: '<%= froala_upload_video_path %>',
+      }).on('froalaEditor.file.unlink', function (e, editor, link) {
+        $.ajax({
+          // Request method.
+          method: 'POST',
+
+          // Request URL.
+          url: '<%= froala_delete_file_path %>',
+
+          // Request params.
+          data: {
+            src: link.getAttribute("href")
+          }
+        })
+        .done (function (data) {
+          console.log ('File was deleted');
+        })
+        .fail (function (err) {
+          console.log ('File delete problem: ' + JSON.stringify(err));
+        })
+      }).on('froalaEditor.image.removed', function (e, editor, $img) {
+        $.ajax({
+          // Request method.
+          method: 'POST',
+
+          // Request URL.
+          url: '<%= froala_delete_image_path %>',
+
+          // Request params.
+          data: {
+            src: $img.attr("src")
+          }
+        })
+        .done (function (data) {
+          console.log ('File was deleted');
+        })
+        .fail (function (err) {
+          console.log ('File delete problem: ' + JSON.stringify(err));
+        })
+      });
+
+
+      // Upload only JPEG images.
+      $('#edit-jpeg').froalaEditor({
+        // Set the file upload URL.
+        imageUploadURL: '<%= froala_upload_image_jpeg_path %>'
+      })
+
+      // Resize images on upload.
+      $('#edit-resize').froalaEditor({
+        // Set the file upload URL.
+        imageUploadURL: '<%= froala_upload_image_resize_path %>'
+      })
+
+      // Resize images on upload.
+      $('#edit-s3').froalaEditor({
+        // Set the file upload URL.
+        imageUploadToS3: <%= @aws_data.to_json.html_safe %>
+      })
+    });
+  </script>
+</body>
+</html>

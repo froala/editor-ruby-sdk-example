@@ -26,3 +26,5 @@
 **/.idea
 
 latest.dump
+
+public/uploads/**

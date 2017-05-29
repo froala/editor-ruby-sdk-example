@@ -53,4 +53,7 @@ end
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
+# Froala Editor SDK
+gem 'froala-editor-sdk', path: '/Users/me/work/wysiwyg-editor-ruby-sdk'
+
 
