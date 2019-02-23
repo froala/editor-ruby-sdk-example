@@ -90,7 +90,9 @@ class FroalaController < ActionController::Base
   # Access uploaded files.
   def access_file
     if File.exists?(Rails.root.join('public', 'uploads', 'images', params[:name]))
-      send_data File.read(Rails.root.join('public', 'uploads', 'images', params[:name])), :filename => ::File.basename(params[:name]), :disposition => 'inline'
+      File.open(Rails.root.join('public', 'uploads', 'images', params[:name]), 'rb') do |f|
+        send_data f.read, :filename => ::File.basename(params[:name]), :disposition => "inline"
+      end
     else
       render :nothing => true
     end
