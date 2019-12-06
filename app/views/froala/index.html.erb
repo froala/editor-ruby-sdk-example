@@ -8,8 +8,8 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.25.0/codemirror.min.css">
 
   <!-- Include Editor style. -->
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/froala-editor/2.5.1/css/froala_editor.pkgd.min.css" rel="stylesheet" type="text/css" />
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/froala-editor/2.5.1/css/froala_style.min.css" rel="stylesheet" type="text/css" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/froala-editor/3.0.6/css/froala_editor.pkgd.min.css" rel="stylesheet" type="text/css" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/froala-editor/3.0.6/css/froala_style.min.css" rel="stylesheet" type="text/css" />
 </head>
 
 <body>
@@ -19,7 +19,7 @@
   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.25.0/mode/xml/xml.min.js"></script>
 
   <!-- Include Editor JS files. -->
-  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/froala-editor/2.5.1//js/froala_editor.pkgd.min.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/froala-editor/3.0.6//js/froala_editor.pkgd.min.js"></script>
   <div class="sample">
     <h2>Basic example.</h2>
     <ul>
@@ -53,16 +53,17 @@
 
   <!-- Initialize the editor. -->
   <script>
-    $(function() {
+    (function() {
       // Upload images basic example.
-      $('#edit-basic').froalaEditor({
+      new FroalaEditor('#edit-basic',{
         // Set the file upload URL.
         imageUploadURL: '<%= froala_upload_image_path %>',
         imageManagerLoadURL: '<%= froala_load_images_path %>',
         imageManagerDeleteURL: '<%= froala_delete_image_path %>',
         fileUploadURL: '<%= froala_upload_file_path %>',
         videoUploadURL: '<%= froala_upload_video_path %>',
-      }).on('froalaEditor.file.unlink', function (e, editor, link) {
+      events : {
+      'file.unlink': function (link) {
         $.ajax({
           // Request method.
           method: 'POST',
@@ -81,7 +82,8 @@
         .fail (function (err) {
           console.log ('File delete problem: ' + JSON.stringify(err));
         })
-      }).on('froalaEditor.image.removed', function (e, editor, $img) {
+      },
+      'image.removed': function ($img) {
         $.ajax({
           // Request method.
           method: 'POST',
@@ -100,32 +102,38 @@
         .fail (function (err) {
           console.log ('File delete problem: ' + JSON.stringify(err));
         })
-      });
+      }}
+      })
+})();
 
-
+      (function() {
       // Upload only JPEG images.
-      $('#edit-jpeg').froalaEditor({
+      new FroalaEditor('#edit-jpeg',{
         // Set the file upload URL.
         imageUploadURL: '<%= froala_upload_image_jpeg_path %>'
       })
 
       // Resize images on upload.
-      $('#edit-resize').froalaEditor({
+      new FroalaEditor('#edit-resize',{
         // Set the file upload URL.
         imageUploadURL: '<%= froala_upload_image_resize_path %>'
       })
+    })();
 
+    (function() {
       // Resize images on upload.
-      $('#edit-s3').froalaEditor({
+      new FroalaEditor('#edit-s3',{
         // Set the file upload URL.
         imageUploadToS3: <%= @aws_data.to_json.html_safe %>
       })
+    })();
 
-      $('#edit-validation').froalaEditor({
+    (function() {
+      new FroalaEditor('#edit-validation',{
         imageUploadURL: '<%= froala_upload_image_validation_path %>',
         fileUploadURL: '<%= froala_upload_file_validation_path %>'
-      });
-    });
+      })
+    })();
   </script>
 </body>
 </html>
