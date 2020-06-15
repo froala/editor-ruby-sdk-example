@@ -103,6 +103,26 @@
         .fail (function (err) {
           console.log ('File delete problem: ' + JSON.stringify(err));
         })
+      }, 
+      'filesManager.removed': function (link) {
+        $.ajax({
+          // Request method.
+          method: 'POST',
+
+          // Request URL.
+          url: '<%= froala_delete_image_path %>',
+
+          // Request params.
+          data: {
+            src:link
+          }
+        })
+        .done (function (data) {
+          console.log ('File was deleted from file manager plugin');
+        })
+        .fail (function (err) {
+          console.log ('File delete problem in file manager plugin: ' + JSON.stringify(err));
+        })
       }}
       })
 })();
