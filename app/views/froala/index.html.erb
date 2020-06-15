@@ -61,7 +61,8 @@
         imageManagerLoadURL: '<%= froala_load_images_path %>',
         imageManagerDeleteURL: '<%= froala_delete_image_path %>',
         fileUploadURL: '<%= froala_upload_file_path %>',
-        videoUploadURL: '<%= froala_upload_video_path %>',
+        filesManagerUploadURL:'<%= froala_upload_image_path %>',
+        videoUploadURL: '<%= froala_upload_video_path %>',          
       events : {
       'file.unlink': function (link) {
         $.ajax({
@@ -102,6 +103,26 @@
         .fail (function (err) {
           console.log ('File delete problem: ' + JSON.stringify(err));
         })
+      }, 
+      'filesManager.removed': function (link) {
+        $.ajax({
+          // Request method.
+          method: 'POST',
+
+          // Request URL.
+          url: '<%= froala_delete_image_path %>',
+
+          // Request params.
+          data: {
+            src:link
+          }
+        })
+        .done (function (data) {
+          console.log ('File was deleted from file manager plugin');
+        })
+        .fail (function (err) {
+          console.log ('File delete problem in file manager plugin: ' + JSON.stringify(err));
+        })
       }}
       })
 })();
@@ -110,13 +131,15 @@
       // Upload only JPEG images.
       new FroalaEditor('#edit-jpeg',{
         // Set the file upload URL.
-        imageUploadURL: '<%= froala_upload_image_jpeg_path %>'
+        imageUploadURL: '<%= froala_upload_image_jpeg_path %>',
+        filesManagerUploadURL: '<%= froala_upload_image_jpeg_path %>',     
       })
 
       // Resize images on upload.
       new FroalaEditor('#edit-resize',{
         // Set the file upload URL.
-        imageUploadURL: '<%= froala_upload_image_resize_path %>'
+        imageUploadURL: '<%= froala_upload_image_resize_path %>',
+        filesManagerUploadURL: '<%= froala_upload_image_resize_path %>'
       })
     })();
 
@@ -124,14 +147,15 @@
       // Resize images on upload.
       new FroalaEditor('#edit-s3',{
         // Set the file upload URL.
-        imageUploadToS3: <%= @aws_data.to_json.html_safe %>
+        imageUploadToS3: <%= @aws_data.to_json.html_safe %>,
+        filesManagerUploadToS3: <%= @aws_data.to_json.html_safe %>,
       })
     })();
 
     (function() {
       new FroalaEditor('#edit-validation',{
         imageUploadURL: '<%= froala_upload_image_validation_path %>',
-        fileUploadURL: '<%= froala_upload_file_validation_path %>'
+        filesManagerUploadURL: '<%= froala_upload_image_validation_path %> '
       })
     })();
   </script>
