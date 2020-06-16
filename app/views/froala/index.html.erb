@@ -49,6 +49,12 @@
     <form>
       <textarea id="edit-validation"></textarea>
     </form>
+
+    <h2>Upload images to Azure.</h2>
+    <form>
+      <textarea id="edit-azure"></textarea>
+    </form>
+
   </div>
 
   <!-- Initialize the editor. -->
@@ -156,6 +162,15 @@
       new FroalaEditor('#edit-validation',{
         imageUploadURL: '<%= froala_upload_image_validation_path %>',
         filesManagerUploadURL: '<%= froala_upload_image_validation_path %> '
+      })
+    })();
+
+    (function() {
+      new FroalaEditor('#edit-azure',{
+        imageUploadToAzure: <%= @azure_data.to_json.html_safe %>,
+        filesManagerUploadToAzure: <%= @azure_data.to_json.html_safe %>,
+        videoUploadToAzure: <%= @azure_data.to_json.html_safe %>,
+        fileUploadToAzure: <%= @azure_data.to_json.html_safe %>,
       })
     })();
   </script>
