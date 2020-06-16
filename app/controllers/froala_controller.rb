@@ -12,6 +12,15 @@ class FroalaController < ActionController::Base
     }
 
     @aws_data = FroalaEditorSDK::S3.data_hash(options)
+
+    @azure_data = {
+      account: 'azure_account',
+      accessKey:'azure_access_key',
+      SASToken: 'azure_sas_token',
+      container: 'azure_container',
+      uploadURL: 'azure_upload_url'
+
+    }
   end
 
   # Upload file.
