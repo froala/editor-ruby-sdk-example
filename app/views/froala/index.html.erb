@@ -110,7 +110,28 @@
       // Upload only JPEG images.
       new FroalaEditor('#edit-jpeg',{
         // Set the file upload URL.
-        imageUploadURL: '<%= froala_upload_image_jpeg_path %>'
+        imageUploadURL: '<%= froala_upload_image_jpeg_path %>',
+        events : {
+          'image.removed': function ($img) {
+            $.ajax({
+              // Request method.
+              method: 'POST',
+    
+              // Request URL.
+              url: '<%= froala_delete_image_path %>',
+    
+              // Request params.
+              data: {
+                src: $img.attr("src")
+              }
+            })
+            .done (function (data) {
+              console.log ('File was deleted');
+            })
+            .fail (function (err) {
+              console.log ('File delete problem: ' + JSON.stringify(err));
+            })
+          }}        
       })
 
       // Resize images on upload.
@@ -124,7 +145,7 @@
       // Resize images on upload.
       new FroalaEditor('#edit-s3',{
         // Set the file upload URL.
-        imageUploadToS3: <%= @aws_data.to_json.html_safe %>
+        imageUploadToS3: '<%= @aws_data.to_json.html_safe %>'
       })
     })();
 
