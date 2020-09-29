@@ -97,7 +97,7 @@ class FroalaController < ActionController::Base
   # Upload video.
   def upload_video
       render :json => FroalaEditorSDK::Video.upload(params, "public/uploads/videos/", { 
-        file_access_path: '/uploads/' 
+        file_access_path: '/uploads/videos/' 
       })
   end
 
