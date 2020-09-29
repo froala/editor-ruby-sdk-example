@@ -1,6 +1,7 @@
 class FroalaController < ActionController::Base
 
   VIDEO_EXT = [".mp4", ".webm", ".ogg"]
+  FILE_EXT = [".txt",".json",".html",".pdf",".doc"]
   # Index.
   def index
     options = {
@@ -96,14 +97,22 @@ class FroalaController < ActionController::Base
   # Upload video.
   def upload_video
       render :json => FroalaEditorSDK::Video.upload(params, "public/uploads/videos/", { 
-        file_access_path: '/uploads/' 
+        file_access_path: '/uploads/videos/' 
       })
   end
 
   # Access uploaded files.
   def access_file
     ext = File.extname(params[:name])
-    fileUploadFolder = VIDEO_EXT.include?(ext) ? 'videos' : 'images'
+
+    if(VIDEO_EXT.include?(ext))
+      fileUploadFolder = 'videos'
+    elsif(FILE_EXT.include?(ext))
+      fileUploadFolder = 'files'
+    else
+      fileUploadFolder = 'images'  
+    end
+
     if File.exists?(Rails.root.join('public', 'uploads', fileUploadFolder , params[:name]))
       File.open(Rails.root.join('public', 'uploads', fileUploadFolder , params[:name]), 'rb') do |f|
         send_data f.read, :filename => ::File.basename(params[:name]), :disposition => "inline"
