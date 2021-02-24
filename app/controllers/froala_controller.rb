@@ -1,6 +1,8 @@
 class FroalaController < ActionController::Base
 
   # Index.
+  layout 'application'
+
   def index
     options = {
         bucket: 'bucket_name',
