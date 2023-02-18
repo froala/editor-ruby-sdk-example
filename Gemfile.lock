@@ -1,5 +1,5 @@
 PATH
-  remote: C:/Users/chitturi.a/froalapjt/wysiwyg-editor-ruby-sdk
+  remote: /Users/me/work/wysiwyg-editor-ruby-sdk
   specs:
     froala-editor-sdk (4.0.17)
       mime-types (~> 3.1)
