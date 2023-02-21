@@ -1,4 +1,4 @@
-class FroalaController < ActionController::Base
+class FroalaController < ApplicationController
 
   # Index.
   def index
