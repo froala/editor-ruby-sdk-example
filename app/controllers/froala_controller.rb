@@ -1,4 +1,5 @@
 class FroalaController < ApplicationController
+  protect_from_forgery except: :index
 
   # Index.
   def index
