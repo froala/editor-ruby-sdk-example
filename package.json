@@ -1,5 +1,7 @@
 {
   "name": "rub-ss",
   "private": true,
-  "dependencies": {}
+  "dependencies": {
+    "sqlite3": "^5.1.4"
+  }
 }
