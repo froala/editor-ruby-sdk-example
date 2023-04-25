@@ -1,6 +1,6 @@
 FROM ruby:2.7.2
 
-LABEL maintainer="rizwan@celestialsys.com"
+LABEL maintainer="ganga@celestialsys.com"
 ARG PackageName
 ARG PackageVersion
 ARG NexusUser
@@ -10,12 +10,12 @@ ARG GitToken
 
 RUN apt-get update -y
 RUN apt-get install -y --no-install-recommends nodejs yarn wget npm
-#set git credentials
 RUN npm install -g git-credential-env
 RUN git init && git config credential.helper "env --username=${GitUser} --password=${GitToken}"
 
 COPY . /app
 WORKDIR /app
+RUN gem update --system
 RUN gem install bundler
 RUN bundle install
 
