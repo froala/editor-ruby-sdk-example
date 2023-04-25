@@ -1,12 +1,12 @@
 FROM ruby:2.7.2
 
 LABEL maintainer="ganga@celestialsys.com"
-ARG PackageName
-ARG PackageVersion
-ARG NexusUser
-ARG NexusPassword
-ARG GitUser
-ARG GitToken
+ARG PackageName=froala-editor-QA241122
+ARG PackageVersion=4.0.16
+ARG NexusUser=froala-cid
+ARG NexusPassword=tyl1pOcjsXGBCUDeh_iXsO7WLPK7LnEr3Ehn4JCz
+ARG GitUser=froala-travis-bot
+ARG GitToken=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
 
 RUN apt-get update -y
 RUN apt-get install -y --no-install-recommends nodejs yarn wget npm

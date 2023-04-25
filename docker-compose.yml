@@ -1,0 +1,12 @@
+version: '3.7'
+
+services:
+  my-ruby:
+    restart: unless-stopped
+    build:
+      context: .
+      dockerfile: Dockerfile
+    pull_policy: always
+    ports:
+      - "3001:3000"
+
