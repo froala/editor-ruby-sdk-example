@@ -40,7 +40,7 @@ cat package.json
 sed -i -e 's/.*froala-editor-sdk.*//g' Gemfile
 
 # add the new dependency
-RUBY_SDK_GIT_TEMPLATE="gem 'froala-editor-sdk', git: 'https://froala-github-user:froala-user-token@github.com/froala/wysiwyg-editor-ruby-sdk-mcs.git', branch: 'ruby_sdk_git_branch_name'"
+RUBY_SDK_GIT_TEMPLATE="gem 'froala-editor-sdk', git: 'https://froala-github-user:froala-user-token@github.com/froala/wysiwyg-editor-ruby-sdk.git', branch: 'ruby_sdk_git_branch_name'"
 echo ${RUBY_SDK_GIT_TEMPLATE} >> Gemfile
 
 sed -i "s/froala-github-user/${GITHUB_USER}/g" Gemfile
