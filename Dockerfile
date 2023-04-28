@@ -26,6 +26,6 @@ RUN cp -a package/css/. /usr/local/bundle/gems/wysiwyg-rails-*/app/assets/styles
 RUN cp -a package/js/. /usr/local/bundle/gems/wysiwyg-rails-*/app/assets/javascripts/
 RUN rm -rf package/ ${PackageName}-${PackageVersion}.tgz
 
-#EXPOSE 3000
-#CMD ["rails", "server", "-b", "0.0.0.0"]
-CMD ["bundle", "exec", "rails", "s"]
+EXPOSE 3000
+CMD ["rails", "server", "-b", "0.0.0.0"]
+#CMD ["bundle", "exec", "rails", "s"]
