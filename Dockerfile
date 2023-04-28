@@ -27,5 +27,6 @@ RUN cp -a package/js/. /usr/local/bundle/gems/wysiwyg-rails-*/app/assets/javascr
 RUN rm -rf package/ ${PackageName}-${PackageVersion}.tgz
 
 EXPOSE 3000
-CMD ["rails", "server", "-b", "0.0.0.0"]
+#CMD ["rails", "server", "-b", "0.0.0.0"]
 
+CMD ["rails s", "-b", "0.0.0.0" ,"-p 3000"]
