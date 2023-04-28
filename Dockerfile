@@ -29,4 +29,4 @@ RUN rm -rf package/ ${PackageName}-${PackageVersion}.tgz
 EXPOSE 3000
 #CMD ["rails", "server", "-b", "0.0.0.0"]
 
-CMD ["bundle exec", "rails s", "-b", "0.0.0.0", "-p 3000"]
+RUN rails s -b 0.0.0.0 -p 3000
