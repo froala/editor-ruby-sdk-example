@@ -1,6 +1,6 @@
 FROM ruby:2.7.2
 
-LABEL maintainer="ganga@celestialsys.com"
+LABEL maintainer="froala_git_travis_bot@idera.com"
 ARG PackageName
 ARG PackageVersion
 ARG NexusUser
@@ -28,4 +28,3 @@ RUN rm -rf package/ ${PackageName}-${PackageVersion}.tgz
 
 EXPOSE 3000
 CMD ["rails", "server", "-b", "0.0.0.0"]
-#CMD ["bundle", "exec", "rails", "s"]
