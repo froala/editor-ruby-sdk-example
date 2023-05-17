@@ -13,8 +13,8 @@ RUN apt-get install -y --no-install-recommends nodejs yarn wget npm
 RUN npm install -g git-credential-env
 RUN git init && git config credential.helper "env --username=${GitUser} --password=${GitToken}"
 
-COPY . /app
-WORKDIR /app
+# COPY . /app
+# WORKDIR /app
 RUN gem install bundler
 RUN bundle install
 
@@ -24,7 +24,7 @@ RUN tar -xvf ${PackageName}-${PackageVersion}.tgz
 
 RUN cp -a package/css/. /usr/local/bundle/gems/wysiwyg-rails-*/app/assets/stylesheets/
 RUN cp -a package/js/. /usr/local/bundle/gems/wysiwyg-rails-*/app/assets/javascripts/
-RUN rm -rf package/ ${PackageName}-${PackageVersion}.tgz
+# RUN rm -rf package/ ${PackageName}-${PackageVersion}.tgz
 
 EXPOSE 3000
 CMD ["rails", "server", "-b", "0.0.0.0"]
