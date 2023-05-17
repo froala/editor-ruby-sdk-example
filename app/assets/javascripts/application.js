@@ -13,3 +13,5 @@
 //= require rails-ujs
 //= require turbolinks
 //= require_tree .
+//= require froala_editor.min.js
+//= require froala_editor.pkgd.min.js
