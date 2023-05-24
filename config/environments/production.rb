@@ -10,7 +10,7 @@ Rails.application.configure do
   # Rake tasks automatically ignore this option for performance.
   config.eager_load = true
 
-  config.hosts << "wysiwyg-editor+[a-z0-9\-.]+\.froala-infra\.com"
+  config.hosts.clear
   
   # Full error reports are disabled and caching is turned on.
   config.consider_all_requests_local       = false
