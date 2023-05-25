@@ -24,6 +24,5 @@ RUN tar -xvf ${PackageName}-${PackageVersion}.tgz
 RUN cp -a package/css/. /usr/local/bundle/gems/wysiwyg-rails-*/app/assets/stylesheets/
 RUN cp -a package/js/. /usr/local/bundle/gems/wysiwyg-rails-*/app/assets/javascripts/
 
-
 EXPOSE 3000
 CMD ["rails", "server", "-b", "0.0.0.0"]
