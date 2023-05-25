@@ -115,7 +115,7 @@ function deploy_service(){
 	ssh -o "StrictHostKeyChecking no" -i  /tmp/sshkey.pem ${SSH_USER}@${DEPLOYMENT_SERVER} " cd /services/${SERVICE_NAME}/ && sudo docker-compose up -d"
 	sleep 10 && ssh -o "StrictHostKeyChecking no" -i  /tmp/sshkey.pem ${SSH_USER}@${DEPLOYMENT_SERVER} " sudo docker ps -a | grep -i ${SERVICE_NAME}" 
 	echo "Docker-compose is in : /services/${SERVICE_NAME} "
-	sleep 30
+	sleep 120
 	RET_CODE=`curl -k -s -o /tmp/notimportant.txt -w "%{http_code}" https://${DEPLOYMENT_URL}`
 	echo "validation code: $RET_CODE for  https://${DEPLOYMENT_URL}"
 	if [ $RET_CODE -ne 200 ]; then 
