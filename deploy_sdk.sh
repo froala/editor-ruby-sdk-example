@@ -91,7 +91,6 @@ function generate_container_name(){
         CONTAINER_NAME="${LW_REPO_NAME}-${AO_IDENTIFIER}-${CT_INDEX}"
         SERVICE_NAME="${LW_REPO_NAME}-${LW_SHORT_TRAVIS_BRANCH}-${CT_INDEX}"
         echo "New index: ${CT_INDEX}"
-        echo "service name : ${SERVICE_NAME} & container name : ${CONTAINER_NAME}"
     fi
 }
 generate_container_name
@@ -108,7 +107,6 @@ echo "  Container name for this deployment:     ${CONTAINER_NAME}           "
 echo "----------------------------------------------------------------------"
 echo -e "\n"
 
-
 # Set the deployment URL
 DEPLOYMENT_URL="${CONTAINER_NAME}.${SDK_ENVIRONMENT}.${BASE_DOMAIN}"
 
@@ -124,6 +122,7 @@ function deploy(){
     sed -i "s/ServiceName/${SERVICE_NAME}/g" docker-compose.yml
     sed -i "s/PortNum/${CONTAINER_SERVICE_PORTNO}/g" docker-compose.yml
     sed -i "s/ContainerName/${CONTAINER_NAME}/g" docker-compose.yml
+
     echo -e "\n"
     echo "Below is the content of docker-compose.yml"
     echo "-------------------------------------------------"
@@ -143,15 +142,15 @@ function deploy(){
     
     # Run docker-compose up on deployment_server
     ssh -o "StrictHostKeyChecking no" -i  /tmp/sshkey.pem "${SSH_USER}"@"${DEPLOYMENT_SERVER}" "cd /services/${SERVICE_NAME}/ && sudo docker-compose up -d --force-recreate"
-    sleep 120
+    sleep 60
 
-    RET_CODE=$(curl -k -s -o /tmp/notimportant.txt -w "%{http_code}" https://"${DEPLOYMENT_URL}/web/admin/install")
-    echo "validation code: $RET_CODE for https://${DEPLOYMENT_URL}/web/admin/install"
+    RET_CODE=$(curl -k -s -o /tmp/notimportant.txt -w "%{http_code}" https://"${DEPLOYMENT_URL}")
+    echo "validation code: $RET_CODE for  https://${DEPLOYMENT_URL}"
     if [ "${RET_CODE}" -ne 200 ]; then 
         echo "Deployment validation failed!!! Please check pipeline logs." 
         exit 1 
     else 
-        echo -e "\n\tService available at URL: https://${DEPLOYMENT_URL}/web/admin/install\n"
+        echo -e "\n\tService available at URL: https://${DEPLOYMENT_URL}\n"
     fi
 }
 
