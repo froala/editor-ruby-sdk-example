@@ -54,6 +54,6 @@ end
 gem 'tzinfo-data'
 
 # Froala Editor SDK
-gem 'froala-editor-sdk', path: '/Users/me/work/wysiwyg-editor-ruby-sdk'
+gem 'froala-editor-sdk', '~> 4.1'
 
 
